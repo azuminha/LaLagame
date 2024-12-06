@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using AC;
 
 public enum EffectType
 {
@@ -13,6 +14,10 @@ public enum EffectType
 
 public class CardManager : MonoBehaviour
 {
+
+    public ActionList enterBattleCamera;
+    public ActionList enterFirstPerson;
+
     [System.Serializable]
     public class CardBase
     {
@@ -27,14 +32,19 @@ public class CardManager : MonoBehaviour
 
     public CardBase[] Cards = new CardBase[]{}; // cards possiveis de se conseguir na roleta
 
-
     public int cardCount;
 
     [SerializeField] private GameObject card_prefab;
     [SerializeField] private GameObject cardHorizontalLayout;
 
-    private void ButtonSet()
+    bool enter = false;
+
+    private IEnumerator ButtonSet()
     {
+        enter = true;
+
+        enterBattleCamera.Interact ();
+
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(1).gameObject.SetActive(true);
 
@@ -45,19 +55,19 @@ public class CardManager : MonoBehaviour
         }
         ShuffleList(availableCards);
 
-        Debug.Log("CardCount: " + cardHorizontalLayout.transform.childCount + " " + cardCount);
+        //Debug.Log("CardCount: " + cardHorizontalLayout.transform.childCount + " " + cardCount);
         while (cardHorizontalLayout.transform.childCount < cardCount)
         {
             Instantiate(card_prefab, cardHorizontalLayout.transform);
         }
-        Debug.Log("Card.len: " + Cards.Length);
+        //Debug.Log("Card.len: " + Cards.Length);
         for(int i = 0; i < cardCount; ++i)
         {
             CardBase card = Cards[availableCards[i]];
             GameObject cardObject = cardHorizontalLayout.transform.GetChild(i).gameObject;
-            Debug.Log($"cardObject name: {cardObject.name}");
+            //Debug.Log($"cardObject name: {cardObject.name}");
 
-            Button cardButton = cardObject.GetComponent<Button>();
+            UnityEngine.UI.Button cardButton = cardObject.GetComponent<UnityEngine.UI.Button>();
             cardButton.onClick.AddListener(() => { CardChosen(card.Name); });
 
             TextMeshProUGUI cardTextName = cardObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
@@ -70,6 +80,8 @@ public class CardManager : MonoBehaviour
             cardValue.text = card.Attack.ToString() + "/" + card.Defense.ToString();
             cardDescription.text = card.Description;
         }
+        
+        yield return new WaitUntil(() => enter == false);
     }
 
     private void CardChosen(string cardName)
@@ -77,7 +89,8 @@ public class CardManager : MonoBehaviour
         Debug.Log(cardName + " escolhido");
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(false);
-
+        enterFirstPerson.Interact ();
+        enter = false;
     }
 
     private void ShuffleList(List<int> list)
@@ -92,8 +105,17 @@ public class CardManager : MonoBehaviour
     }
 
 //tirar isso
+    private IEnumerator ChooseCards()
+    {
+        // Loop to allow the player to choose 3 cards
+        for (int i = 0; i < 5; ++i)
+        {
+            yield return StartCoroutine(ButtonSet()); // Wait until ButtonSet completes before continuing
+        }
+    }
+
     private void Start()
     {
-        ButtonSet();
+        StartCoroutine(ChooseCards());
     }
 }
