@@ -37,6 +37,8 @@ public class CardManager : MonoBehaviour
     [SerializeField] private GameObject card_prefab;
     [SerializeField] private GameObject cardHorizontalLayout;
 
+    public PlayerDeck player;
+
     bool enter = false;
 
     private IEnumerator ButtonSet()
@@ -61,6 +63,7 @@ public class CardManager : MonoBehaviour
             Instantiate(card_prefab, cardHorizontalLayout.transform);
         }
         //Debug.Log("Card.len: " + Cards.Length);
+        
         for(int i = 0; i < cardCount; ++i)
         {
             CardBase card = Cards[availableCards[i]];
@@ -68,7 +71,8 @@ public class CardManager : MonoBehaviour
             //Debug.Log($"cardObject name: {cardObject.name}");
 
             UnityEngine.UI.Button cardButton = cardObject.GetComponent<UnityEngine.UI.Button>();
-            cardButton.onClick.AddListener(() => { CardChosen(card.Name); });
+            cardButton.onClick.RemoveAllListeners();
+            cardButton.onClick.AddListener(() => { CardChosen(card); });
 
             TextMeshProUGUI cardTextName = cardObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI cardCost = cardObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
@@ -84,9 +88,12 @@ public class CardManager : MonoBehaviour
         yield return new WaitUntil(() => enter == false);
     }
 
-    private void CardChosen(string cardName)
+    private void CardChosen(CardBase card)
     {
-        Debug.Log(cardName + " escolhido");
+        Debug.Log(card.Name + " escolhido");
+
+        player.AddCard(card);
+
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(false);
         enterFirstPerson.Interact ();
@@ -118,4 +125,5 @@ public class CardManager : MonoBehaviour
     {
         StartCoroutine(ChooseCards());
     }
+
 }
