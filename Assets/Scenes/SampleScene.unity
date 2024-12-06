@@ -2928,7 +2928,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d54d67cf4d58a523c9cb78171313d760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cards: []
+  Cards:
+  - Name: Ataque basico
+    Description: Causa 1 de dano
+    ManaCost: 1
+    Attack: 1
+    Defense: 0
+    Effect: 0
+    QuestionDifficulty: 1
+  - Name: Defesa Basico
+    Description: Mais um de defesa
+    ManaCost: 1
+    Attack: 0
+    Defense: 1
+    Effect: 0
+    QuestionDifficulty: 1
+  - Name: Dano e Defesa
+    Description: 1 de dano e 1 de defesa
+    ManaCost: 1
+    Attack: 1
+    Defense: 1
+    Effect: 0
+    QuestionDifficulty: 2
   cardCount: 3
   card_prefab: {fileID: 2242008395791865868, guid: d31a01b4ec3c2826883e5211949fd5c1, type: 3}
   cardHorizontalLayout: {fileID: 581146956}
