@@ -112,10 +112,10 @@ public class CardManager : MonoBehaviour
     }
 
 //tirar isso
-    private IEnumerator ChooseCards()
+    public IEnumerator ChooseCards(int n)
     {
         // Loop to allow the player to choose 3 cards
-        for (int i = 0; i < 5; ++i)
+        for (int i = 0; i < n; ++i)
         {
             yield return StartCoroutine(ButtonSet()); // Wait until ButtonSet completes before continuing
         }
@@ -123,7 +123,7 @@ public class CardManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(ChooseCards());
+        StartCoroutine(ChooseCards(5));
     }
 
 }

@@ -16,6 +16,7 @@ public class ScenesManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("ScenesManager instance initialized.");
             Instance = this;
         }
 
@@ -35,8 +36,11 @@ public class ScenesManager : MonoBehaviour
             return;
         }
 
-        Debug.Log(sceneName);
-        Instance.StartCoroutine(LoadSceneAsyncAux(sceneName, callback));
+        //Debug.Log(sceneName);
+        if(Instance == null)
+            Debug.Log("ASAAAAA");
+        else
+            Instance.StartCoroutine(LoadSceneAsyncAux(sceneName, callback));
     }
 
     public static bool IsSceneLoaded(string key)
