@@ -10,11 +10,14 @@ public class Battle1 : MonoBehaviour
     public ActionList enterBattleCamera;
     public ActionList enterFirstPerson;
     
-    private const int UISize = 7;
+    private const int UISize = 9;
     [SerializeField] private GameObject card_prefab;
     [SerializeField] private GameObject cardHorizontalLayout;
+    [SerializeField] private GameObject resposta_prefab;
+    [SerializeField] private GameObject respostaVerticalLayout;
     private Animator animator;
     
+    public QuestionManager questionBase;
 
     private int HandSize = 4;
     private int cardTop = 0;
@@ -172,18 +175,71 @@ public class Battle1 : MonoBehaviour
         }
     }
 
+    void EnableQuestionUI()
+    {
+        BattleUI.transform.GetChild(7).gameObject.SetActive(true);
+        BattleUI.transform.GetChild(8).gameObject.SetActive(true);
+    }
+
+    void DisableQuestionUI()
+    {
+        BattleUI.transform.GetChild(7).gameObject.SetActive(false);
+        BattleUI.transform.GetChild(8).gameObject.SetActive(false);
+    }
+
     bool enter = false;
+
+    void QuestionChosen(string ans)
+    {
+        enter = false;
+        DisableQuestionUI();
+    }
+
+    void ShowQuestions()
+    {   
+        EnableQuestionUI();
+
+        while (respostaVerticalLayout.transform.childCount < 4)
+        {
+            Instantiate(resposta_prefab, respostaVerticalLayout.transform);
+        }
+
+        int randomIndex = Random.Range(0, questionBase.Questions.Length);
+        Debug.Log("questionBase.Questions.Length : " + questionBase.Questions.Length.ToString() + " RANDINDEX: " + randomIndex.ToString());
+        QuestionManager.QuestionBase question = questionBase.Questions[randomIndex];
+        
+        for(int i = 0; i < 4; ++i)
+        {
+            string questionText = question.Resposta[i];
+            GameObject questionObject = respostaVerticalLayout.transform.GetChild(i).gameObject;
+            
+            UnityEngine.UI.Button respButton = questionObject.GetComponent<UnityEngine.UI.Button>();
+            respButton.onClick.RemoveAllListeners();
+            respButton.onClick.AddListener(() => { QuestionChosen(questionText); });
+
+            TextMeshProUGUI RespText = questionObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            RespText.text = questionText;
+        }
+    }
+    
     private void CardChosen(CardManager.CardBase card)
     {
-        enter = true;
+        StartCoroutine(HandleCardChosen(card));
+    }
+    
+    private IEnumerator HandleCardChosen(CardManager.CardBase card)
+    {
 
         Debug.Log(card.Name + " escolhido");
-        if(Player.Mana >= card.ManaCost && FinalizadoTurno == false)
+        if(Player.Mana >= card.ManaCost && FinalizadoTurno == false && enter == false)
         {
             HandCards.Remove(card);
             Discard.Add(card);
             Destroy(cardHorizontalLayout.transform.GetChild(0).gameObject);
 
+            enter = true;
+            ShowQuestions();
+            yield return new WaitUntil(() => !enter);
             //while(enter)
             //{
              //   yield return null;
@@ -197,10 +253,38 @@ public class Battle1 : MonoBehaviour
         }
     }
 
+    /*private void CardChosen(CardManager.CardBase card)
+    {
+        enter = true;
+
+        Debug.Log(card.Name + " escolhido");
+        if(Player.Mana >= card.ManaCost && FinalizadoTurno == false)
+        {
+            HandCards.Remove(card);
+            Discard.Add(card);
+            Destroy(cardHorizontalLayout.transform.GetChild(0).gameObject);
+
+            ShowQuestions();
+
+            //while(enter)
+            //{
+             //   yield return null;
+            //}
+            //process(Card);
+            EnemyLife -= 2;
+            Player.Mana -= 1;
+            HandSize--;
+
+            updateUI();
+        }
+    }*/
+
     void EnableBattleUI()
     {
         for(int i = 0; i < UISize; ++i)
             BattleUI.transform.GetChild(i).gameObject.SetActive(true);
+        BattleUI.transform.GetChild(7).gameObject.SetActive(false);
+        BattleUI.transform.GetChild(8).gameObject.SetActive(false);
         ShowCards();
     }
 
