@@ -123,7 +123,7 @@ public class CardManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(ChooseCards(5));
+        StartCoroutine(ChooseCards(15));
     }
 
 }
