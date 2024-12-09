@@ -7,12 +7,12 @@ public class Score : MonoBehaviour
     static public int score = 0;
     public TextMeshProUGUI scoreText;
 
-    static void addScore(int x)
+    public static void addScore(int x)
     {
         score += x;
     }
 
-    static void resetScore()
+    public static void resetScore()
     {
         score = 0;
     }

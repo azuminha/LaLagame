@@ -11,6 +11,7 @@ public class ChestOpen : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
+        animator.SetTrigger("Close");
     }
 
     void ChestOpenning()

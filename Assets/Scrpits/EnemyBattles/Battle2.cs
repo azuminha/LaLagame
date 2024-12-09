@@ -6,7 +6,7 @@ using TMPro;
 using AC;
 using UnityEngine.SceneManagement;
 
-public class Battle1 : MonoBehaviour
+public class Battle2 : MonoBehaviour
 {
     public GameObject BattleUI;
     public ActionList enterBattleCamera;
@@ -288,6 +288,7 @@ public class Battle1 : MonoBehaviour
         StartCoroutine(HandleCardChosen(card));
     }
     
+    // mudar aqui para colocar barreira de gelo
     void RemoveEnemyLife(int x)
     {
         int contador = 0;
@@ -300,7 +301,7 @@ public class Battle1 : MonoBehaviour
             x = 0;
         else
             x = x - contador;
-            
+
         EnemyLife -= x;
     }
 
@@ -417,7 +418,6 @@ public class Battle1 : MonoBehaviour
     // ALTERAR ISSO PARA UM NOVO NPC
     void EnemyLogic()
     {
-        // Adicionar o gelo
         float probability = Random.Range(0f, 1f);
         if(probability <= 0.2)
             Player.Life -= 1;

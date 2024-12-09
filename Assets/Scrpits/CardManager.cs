@@ -4,17 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using AC;
-
 public enum EffectType
 {
     None,
     Poison,
     Burn,
+    AddMana,
+    Ice, // diminui dano tomado
+    DrawCard,
+    Heal,
 };
-
 public class CardManager : MonoBehaviour
 {
-
     public ActionList enterBattleCamera;
     public ActionList enterFirstPerson;
 
