@@ -419,13 +419,13 @@ public class Battle7 : MonoBehaviour
     {
         // Adicionar o gelo
         float probability = Random.Range(0f, 1f);
-        if(probability <= 0.2)
+        if(probability <= 0.5)
             Player.Life -= 1;
-        else if(probability <= 0.4)
-            Player.Life -= 2;
-        else if(probability <= 0.6)
-            for(int i = 0; i < 2; ++i) Player.Status.Add(EffectType.Poison);
-        else if(probability <= 0.8) EnemyLife += 1;
+        else if(probability <= 0.75)
+            EnemyStatus.Add(EffectType.Ice);
+        else
+            EnemyStatus.Add(EffectType.Heal);
+        
     }
 
     // Mudar aqui se adicionar um novo status
@@ -566,6 +566,8 @@ public class Battle7 : MonoBehaviour
             Score.addScore(Pontuacao);
             Player.MaxLife += 5;
             Player.ResetLife();
+            Player.ResetStatus();
+            Score.KilledEnemy();
             
         }else
         {

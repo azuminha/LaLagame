@@ -417,15 +417,23 @@ public class Battle4 : MonoBehaviour
     // ALTERAR ISSO PARA UM NOVO NPC
     void EnemyLogic()
     {
-        // Adicionar o gelo
+        int gelo = 0;
+        for(int i=0; i<Player.Status.Count; ++i)
+            if(Player.Status[i] == EffectType.Ice)
+                gelo++;
+        //Score.min(5, Score.max(5 - gelo, 0));
+        
         float probability = Random.Range(0f, 1f);
-        if(probability <= 0.2)
-            Player.Life -= 1;
-        else if(probability <= 0.4)
-            Player.Life -= 2;
-        else if(probability <= 0.6)
-            for(int i = 0; i < 2; ++i) Player.Status.Add(EffectType.Poison);
-        else if(probability <= 0.8) EnemyLife += 1;
+        if(probability <= 0.5){
+            Player.Life -= Score.min(2, Score.max(2 - gelo, 0));
+            for(int i = 0; i < 1; ++i) Player.Status.Add(EffectType.Burn);
+        }
+        else if(probability <= 0.8)
+            for(int i = 0; i < 2; ++i) Player.Status.Add(EffectType.Burn);
+        else if(probability <= 0.9)
+            for(int i = 0; i < 3; ++i) Player.Status.Add(EffectType.Burn);
+        else 
+            EnemyLife += 5;
     }
 
     // Mudar aqui se adicionar um novo status
@@ -566,7 +574,9 @@ public class Battle4 : MonoBehaviour
             Score.addScore(Pontuacao);
             Player.MaxLife += 5;
             Player.ResetLife();
-            
+            Player.ResetStatus();
+            Score.KilledEnemy();
+
         }else
         {
             Debug.Log("PERDEU");

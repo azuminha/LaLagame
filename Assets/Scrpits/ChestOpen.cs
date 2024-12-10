@@ -32,6 +32,7 @@ public class ChestOpen : MonoBehaviour
     }
     void GetNewCard()
     {
-        StartCoroutine(cardManager.ChooseCards(1));
+        int randomNumber = Random.Range(2, 4);
+        StartCoroutine(cardManager.ChooseCards(randomNumber));
     }
 }

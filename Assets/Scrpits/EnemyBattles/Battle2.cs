@@ -419,13 +419,12 @@ public class Battle2 : MonoBehaviour
     void EnemyLogic()
     {
         float probability = Random.Range(0f, 1f);
-        if(probability <= 0.2)
+        if(probability <= 0.5)
             Player.Life -= 1;
-        else if(probability <= 0.4)
+        else if(probability <= 0.7)
             Player.Life -= 2;
-        else if(probability <= 0.6)
-            for(int i = 0; i < 2; ++i) Player.Status.Add(EffectType.Poison);
-        else if(probability <= 0.8) EnemyLife += 1;
+        else if(probability <= 0.75)
+            EnemyLife += 1;
     }
 
     // Mudar aqui se adicionar um novo status
@@ -566,7 +565,9 @@ public class Battle2 : MonoBehaviour
             Score.addScore(Pontuacao);
             Player.MaxLife += 5;
             Player.ResetLife();
-            
+            Player.ResetStatus();
+            Score.KilledEnemy();
+
         }else
         {
             Debug.Log("PERDEU");

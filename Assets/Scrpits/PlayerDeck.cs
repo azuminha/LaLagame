@@ -31,4 +31,9 @@ public class PlayerDeck : MonoBehaviour
     {
         Life += x;
     }
+
+    public void ResetStatus()
+    {
+        Status.Clear();
+    }
 }

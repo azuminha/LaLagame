@@ -6,6 +6,8 @@ public class WalkSoundScript : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private AudioClip WalkSound;
+    [SerializeField] private AudioClip WalkSoundCastle;
+    public static bool Castle = false;
     private AudioSource audio;
     void Start()
     {
@@ -19,7 +21,10 @@ public class WalkSoundScript : MonoBehaviour
 	    {
 	    	if(!audio.isPlaying)
 	    	{
-	    		audio.clip = WalkSound;
+                if(!Castle)
+	    		    audio.clip = WalkSound;
+                else
+                    audio.clip = WalkSoundCastle;
 	    		audio.Play();
 	    	}
 	    }

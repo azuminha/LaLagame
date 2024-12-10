@@ -11,6 +11,7 @@ public class Battle1 : MonoBehaviour
     public GameObject BattleUI;
     public ActionList enterBattleCamera;
     public ActionList enterFirstPerson;
+    public ActionList FalaAction;
     public Transform playerTransform;
     
     private const int UISize = 9;
@@ -418,14 +419,19 @@ public class Battle1 : MonoBehaviour
     void EnemyLogic()
     {
         // Adicionar o gelo
+        int gelo = 0;
+        for(int i=0; i<Player.Status.Count; ++i)
+            if(Player.Status[i] == EffectType.Ice)
+                gelo++;
+        //Math.Min(5, Math.Max(5 - gelo, 0));
+
         float probability = Random.Range(0f, 1f);
-        if(probability <= 0.2)
-            Player.Life -= 1;
-        else if(probability <= 0.4)
-            Player.Life -= 2;
-        else if(probability <= 0.6)
-            for(int i = 0; i < 2; ++i) Player.Status.Add(EffectType.Poison);
-        else if(probability <= 0.8) EnemyLife += 1;
+        if(probability <= 0.5)
+            Player.Life -= Score.min(5, Score.max(5 - gelo, 0));
+        else if(probability <= 0.8)
+            for(int i = 0; i < 5; ++i) Player.Status.Add(EffectType.Poison);
+        else if(probability <= 0.9) 
+            EnemyLife += 5;
     }
 
     // Mudar aqui se adicionar um novo status
@@ -496,6 +502,10 @@ public class Battle1 : MonoBehaviour
 
     public IEnumerator StartBattle()
     {
+        if(Score.EnemiesDefeated < 7)
+        {
+            FalaAction.Interact();
+        }else{
         EnemyLife = MaxEnemyLife;
         transform.LookAt(new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z));
 
@@ -566,11 +576,16 @@ public class Battle1 : MonoBehaviour
             Score.addScore(Pontuacao);
             Player.MaxLife += 5;
             Player.ResetLife();
-            
+            Player.ResetStatus();
+
+            WalkSoundScript.Castle = true;
+            playerTransform.position = new Vector3(391+56, 54+10, 45+49);
+            Score.KilledEnemy();
         }else
         {
             Debug.Log("PERDEU");
             UnityEngine.SceneManagement.SceneManager.LoadScene("TelaFinal");
+        }
         }
     }
 
