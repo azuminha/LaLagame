@@ -12,5 +12,7 @@ public class TelaFinal : MonoBehaviour
     void Start()
     {
         ScoreText.text = "SCORE: " + Score.score.ToString();
+        WalkSoundScript.Castle = false;
+        Score.resetScore();
     }
 }

@@ -12,6 +12,7 @@ public class BattleWarrior2 : MonoBehaviour
     public ActionList enterBattleCamera;
     public ActionList enterFirstPerson;
     public Transform playerTransform;
+    public ActionList EndGameAction;
     
     private const int UISize = 9;
     [SerializeField] private GameObject card_prefab;
@@ -318,24 +319,21 @@ public class BattleWarrior2 : MonoBehaviour
             Player.Life += card.Defense;
         }else if(card.Effect == EffectType.Poison) // Poison
         {
-            if(card.Name == "Super Veneno")
+            int randomNumber = Random.Range(1, card.Attack);
+            for(int i=0; i<randomNumber; ++i)
             {
-                for(int i=0; i<card.Attack; ++i)
-                {
-                    EnemyStatus.Add(EffectType.Poison);
-                }
-            }else
-            {
-                RemoveEnemyLife(card.Attack);
                 EnemyStatus.Add(EffectType.Poison);
             }
+            RemoveEnemyLife(card.Attack);
+            Player.Life += card.Defense;
+
         }else if(card.Effect == EffectType.Burn)
         {
             RemoveEnemyLife(card.Attack);
             Player.Life += card.Defense;
-            EnemyStatus.Add(EffectType.Burn);
+            int randomNumber = Random.Range(1, card.Attack);
 
-            if(card.Name == "Fogo com Dano")
+            for(int i=0; i<randomNumber; ++i)
             {
                 EnemyStatus.Add(EffectType.Burn);
             }
@@ -425,9 +423,14 @@ public class BattleWarrior2 : MonoBehaviour
 
         float probability = Random.Range(0f, 1f);
         if(probability <= 0.8)
-            Player.Life -= Score.min(20, Score.max(20 - gelo, 0));
+            Player.Life -= Score.min(30, Score.max(30 - gelo, 0));
         else
             EnemyLife += 10;
+
+        if(Player.Deck.Count <= 0 && HandCards.Count <= 0)
+        {
+            Player.Life = 0;
+        }
     }
 
     // Mudar aqui se adicionar um novo status
@@ -563,7 +566,7 @@ public class BattleWarrior2 : MonoBehaviour
             animator.SetTrigger("Morra");
             Debug.Log("dif 1 " + PerguntasRespondidas[0].ToString() + " dif 2 " + PerguntasRespondidas[1].ToString() + " dif 3" + PerguntasRespondidas[2].ToString());
             int Pontuacao = PontuacaoBase * NPCBattleDif;
-            for(int i=0; i<2; ++i)
+            for(int i=0; i<3; ++i)
             {
                 Pontuacao += (i+1)*5*NPCBattleDif*PerguntasRespondidas[i];
             }
@@ -576,6 +579,7 @@ public class BattleWarrior2 : MonoBehaviour
         }else
         {
             Debug.Log("PERDEU");
+            EndGameAction.Interact();
             UnityEngine.SceneManagement.SceneManager.LoadScene("TelaFinal");
         }
     }
@@ -589,7 +593,7 @@ public class BattleWarrior2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown("m") || EnemyLife <= 0 || Player.Life <= 0)
+        if(Input.GetKeyDown("p") || EnemyLife <= 0 || Player.Life <= 0)
         {
             FinalizadoTurno = true;
         }

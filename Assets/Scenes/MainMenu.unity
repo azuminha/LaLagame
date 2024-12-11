@@ -319,14 +319,16 @@ MonoBehaviour:
 
     Mouse - Interacao com o ambiente
 
+    p
+    - Para passar o turno
 
-    O
-    objetivo eh enfrentar os inimigos para ganhar pontos e passar de fase.
+
+    O objetivo eh enfrentar os inimigos para ganhar pontos
+    e passar de fase.
 
 
-    Para
-    usar uma carta alem da quantidade de mana gasta, deve-se acertar uma pergunta
-    com uma dificuldade correspondente a carta.'
+    Para usar uma carta alem da quantidade de mana gasta,
+    deve-se acertar uma pergunta com uma dificuldade correspondente a carta.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3883f2cd5307a7a22a9f24751f5c3a06, type: 2}
   m_sharedMaterial: {fileID: 5606149825509650808, guid: 3883f2cd5307a7a22a9f24751f5c3a06, type: 2}
@@ -1489,7 +1491,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 341, y: 53}
-  m_SizeDelta: {x: 500, y: 500}
+  m_SizeDelta: {x: 810, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1238305842
 MonoBehaviour:
@@ -1511,7 +1513,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Titulo Do Jogo Luciano
+  m_text: 'ChronoCards: Duel of Eras'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3883f2cd5307a7a22a9f24751f5c3a06, type: 2}
   m_sharedMaterial: {fileID: 5606149825509650808, guid: 3883f2cd5307a7a22a9f24751f5c3a06, type: 2}
